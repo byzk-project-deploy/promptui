@@ -2,9 +2,8 @@ package main
 
 import (
 	"fmt"
+	"github.com/byzk-project-deploy/promptui"
 	"strconv"
-
-	"github.com/manifoldco/promptui"
 )
 
 type pepper struct {

@@ -3,8 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
-
-	"github.com/manifoldco/promptui"
+	"github.com/byzk-project-deploy/promptui"
 )
 
 func main() {

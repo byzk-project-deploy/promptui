@@ -3,14 +3,14 @@ package promptui
 import (
 	"bytes"
 	"fmt"
+	"github.com/byzk-project-deploy/promptui/list"
+	"github.com/byzk-project-deploy/promptui/screenbuf"
 	"io"
 	"os"
 	"text/tabwriter"
 	"text/template"
 
 	"github.com/byzk-project-deploy/readline"
-	"github.com/manifoldco/promptui/list"
-	"github.com/manifoldco/promptui/screenbuf"
 )
 
 // SelectedAdd is used internally inside SelectWithAdd when the add option is selected in select mode.

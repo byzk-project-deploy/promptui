@@ -2,9 +2,8 @@ package promptui
 
 import (
 	"bytes"
+	"github.com/byzk-project-deploy/promptui/screenbuf"
 	"testing"
-
-	"github.com/manifoldco/promptui/screenbuf"
 )
 
 func TestSelectTemplateRender(t *testing.T) {

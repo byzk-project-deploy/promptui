@@ -3,9 +3,8 @@ package main
 import (
 	"errors"
 	"fmt"
+	"github.com/byzk-project-deploy/promptui"
 	"strconv"
-
-	"github.com/manifoldco/promptui"
 )
 
 func main() {

@@ -2,12 +2,12 @@ package promptui
 
 import (
 	"fmt"
+	"github.com/byzk-project-deploy/promptui/screenbuf"
 	"io"
 	"strings"
 	"text/template"
 
 	"github.com/byzk-project-deploy/readline"
-	"github.com/manifoldco/promptui/screenbuf"
 )
 
 // Prompt represents a single line text field input with options for validation and input masks.
