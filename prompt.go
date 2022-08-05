@@ -150,6 +150,10 @@ func (p *Prompt) Run() (string, error) {
 		defer rl.Close()
 	}
 
+	if !rl.Config.UniqueEditLine {
+		rl.Config.UniqueEditLine = true
+		defer func() { rl.Config.UniqueEditLine = false }()
+	}
 	rl.SetPrompt("")
 
 	// we're taking over the cursor,  so stop showing it.
