@@ -147,7 +147,10 @@ func (p *Prompt) Run() (string, error) {
 		if err != nil {
 			return "", err
 		}
+		defer rl.Close()
 	}
+
+	rl.SetPrompt("")
 
 	// we're taking over the cursor,  so stop showing it.
 	rl.Write([]byte(hideCursor))
@@ -260,7 +263,7 @@ func (p *Prompt) Run() (string, error) {
 	}
 
 	rl.Write([]byte(showCursor))
-	rl.Close()
+	//rl.Close()
 
 	return cur.Get(), err
 }
