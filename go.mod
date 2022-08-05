@@ -1,4 +1,4 @@
-module github.com/manifoldco/promptui
+module github.com/byzk-project-deploy/promptui
 
 go 1.12
 
