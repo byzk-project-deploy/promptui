@@ -238,7 +238,7 @@ func (p *Prompt) Run() (string, error) {
 		sb.WriteString("")
 		sb.Flush()
 		rl.Write([]byte(showCursor))
-		rl.Close()
+		//rl.Close()
 		return "", err
 	}
 
