@@ -6,7 +6,7 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/chzyer/readline"
+	"github.com/byzk-project-deploy/readline"
 	"github.com/manifoldco/promptui/screenbuf"
 )
 
@@ -49,6 +49,8 @@ type Prompt struct {
 
 	// the Pointer defines how to render the cursor.
 	Pointer Pointer
+
+	Readline *readline.Instance
 
 	Stdin  io.ReadCloser
 	Stdout io.WriteCloser
@@ -113,32 +115,40 @@ type PromptTemplates struct {
 // Run will keep the prompt alive until it has been canceled from the command prompt or it has received a valid
 // value. It will return the value and an error if any occurred during the prompt's execution.
 func (p *Prompt) Run() (string, error) {
-	var err error
+	var (
+		err error
+		rl  *readline.Instance
+	)
 
 	err = p.prepareTemplates()
 	if err != nil {
 		return "", err
 	}
 
-	c := &readline.Config{
-		Stdin:          p.Stdin,
-		Stdout:         p.Stdout,
-		EnableMask:     p.Mask != 0,
-		MaskRune:       p.Mask,
-		HistoryLimit:   -1,
-		VimMode:        p.IsVimMode,
-		UniqueEditLine: true,
+	if p.Readline != nil {
+		rl = p.Readline
+	} else {
+		c := &readline.Config{
+			Stdin:          p.Stdin,
+			Stdout:         p.Stdout,
+			EnableMask:     p.Mask != 0,
+			MaskRune:       p.Mask,
+			HistoryLimit:   -1,
+			VimMode:        p.IsVimMode,
+			UniqueEditLine: true,
+		}
+
+		err = c.Init()
+		if err != nil {
+			return "", err
+		}
+
+		rl, err = readline.NewEx(c)
+		if err != nil {
+			return "", err
+		}
 	}
 
-	err = c.Init()
-	if err != nil {
-		return "", err
-	}
-
-	rl, err := readline.NewEx(c)
-	if err != nil {
-		return "", err
-	}
 	// we're taking over the cursor,  so stop showing it.
 	rl.Write([]byte(hideCursor))
 	sb := screenbuf.New(rl)
@@ -189,7 +199,11 @@ func (p *Prompt) Run() (string, error) {
 		return nil, 0, keepOn
 	}
 
-	c.SetListener(listen)
+	rawListener := rl.Config.Listener
+	defer func() { rl.Config.Listener = rawListener }()
+	rl.Config.SetListener(listen)
+
+	//c.SetListener(listen)
 
 	for {
 		_, err = rl.Readline()
